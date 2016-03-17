@@ -12,10 +12,8 @@ from nlp_utils import clean_text, pos_tag_text
 ##
 
 print("Load data...")
-dfTrain = pd.read_csv(filepath_or_buffer=str(config.original_train_data_path), encoding="ISO-8859-1").fillna("")[
-          0:50]  # !!!
-dfTest = pd.read_csv(filepath_or_buffer=str(config.original_test_data_path), encoding="ISO-8859-1").fillna("")[
-         0:50]  # !!!
+dfTrain = pd.read_csv(filepath_or_buffer=str(config.original_train_data_path), encoding="utf-8").fillna("")  # TODO: !!!
+dfTest = pd.read_csv(filepath_or_buffer=str(config.original_test_data_path), encoding="utf-8").fillna("")# !!!
 num_train, num_test = dfTrain.shape[0], dfTest.shape[0]
 print("Done.")
 

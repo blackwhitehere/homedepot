@@ -87,8 +87,8 @@ token_pattern = r"(?u)\b\w\w+\b"
 # token_pattern = r"\w+"
 # token_pattern = r"[\w']+"
 tfidf__norm = "l2"
-tfidf__max_df = 0.75
-tfidf__min_df = 3
+tfidf__max_df = 4.75 #0.75
+tfidf__min_df = 1 # 3
 
 
 def getTFV(token_pattern=token_pattern,

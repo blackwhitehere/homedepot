@@ -13,17 +13,16 @@ class Config:
                  stemmer_type="snowball",
                  count_feat_transform=np.sqrt):
 
-        self.drop_htlm_flag = False
-        self.n_classes = 3
+        #self.drop_htlm_flag = False
         self.stemmer_type = 'porter'
 
         ##
 
-        self.n_classes = 3  # 4
+        self.n_classes = 3
 
         # CV params
-        self.n_runs = 3
-        self.n_folds = 3
+        self.n_runs = 1 # 3
+        self.n_folds = 1 # 3
         self.stratified_label = "query"
 
         # path

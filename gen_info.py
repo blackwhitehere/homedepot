@@ -39,8 +39,8 @@ def gen_info(feat_path_name):
         dfTrain = cPickle.load(f)
     with open(config.processed_test_data_path, "rb") as f:
         dfTest = cPickle.load(f)
-    dfTrain_original = pd.read_csv(config.original_train_data_path).fillna("")
-    dfTest_original = pd.read_csv(config.original_test_data_path).fillna("")
+    dfTrain_original = pd.read_csv(config.original_train_data_path, encoding="utf-8").fillna("") #TODO: set back to full set
+    dfTest_original = pd.read_csv(config.original_test_data_path, encoding="utf-8").fillna("")
     # insert fake label for test
     dfTest_original["median_relevance"] = np.ones((dfTest_original.shape[0]))
     dfTest_original["relevance_variance"] = np.zeros((dfTest_original.shape[0]))
@@ -81,18 +81,19 @@ def gen_info(feat_path_name):
             np.savetxt("%s/train.feat.group" % path, [len(trainInd)], fmt="%d")
             np.savetxt("%s/valid.feat.group" % path, [len(validInd)], fmt="%d")
             
-            # ########### TODO: dicretize trainInd
-            # # get and dump cdf #
             # ###########
-            # hist = np.bincount(Y[trainInd])
-            # overall_cdf_valid = np.cumsum(hist) / float(sum(hist))
-            # np.savetxt("%s/valid.cdf" % path, overall_cdf_valid)
+            # get and dump cdf #
+            ###########
+            hist = dfTrain_original["median_relevance"][trainInd].value_counts() #np.bincount(Y[trainInd])
+            overall_cdf_valid = np.cumsum(hist) / float(sum(hist))
+            np.savetxt("%s/valid.cdf" % path, overall_cdf_valid)
                 
             ###############
             # dump all the other info #
             ###############
-            dfTrain_original.iloc[trainInd].to_csv("%s/train.info" % path, index=False, header=True)
-            dfTrain_original.iloc[validInd].to_csv("%s/valid.info" % path, index=False, header=True)
+
+            dfTrain_original.iloc[trainInd].to_csv("%s/train.info" % path, index=False, header=True, encoding="utf-8")
+            dfTrain_original.iloc[validInd].to_csv("%s/valid.info" % path, index=False, header=True, encoding="utf-8")
     print("Done.")
 
     print("For training and testing...")
@@ -108,12 +109,12 @@ def gen_info(feat_path_name):
     np.savetxt("%s/%s/All/train.feat.group" % (config.feat_folder, feat_path_name), [dfTrain.shape[0]], fmt="%d")
     np.savetxt("%s/%s/All/test.feat.group" % (config.feat_folder, feat_path_name), [dfTest.shape[0]], fmt="%d")
     # cdf
-    # hist_full = np.bincount(Y) TODO: discretize response
-    # print (hist_full) / float(sum(hist_full))
-    # overall_cdf_full = np.cumsum(hist_full) / float(sum(hist_full))
-    # np.savetxt("%s/%s/All/test.cdf" % (config.feat_folder, feat_path_name), overall_cdf_full)
+    hist_full = dfTrain_original["median_relevance"].value_counts() #np.bincount(Y)
+    print(hist_full / float(sum(hist_full)))
+    overall_cdf_full = np.cumsum(hist_full) / float(sum(hist_full))
+    np.savetxt("%s/%s/All/test.cdf" % (config.feat_folder, feat_path_name), overall_cdf_full)
     # info
-    dfTrain_original.to_csv("%s/%s/All/train.info" % (config.feat_folder, feat_path_name), index=False, header=True)
-    dfTest_original.to_csv("%s/%s/All/test.info" % (config.feat_folder, feat_path_name), index=False, header=True)
+    dfTrain_original.to_csv("%s/%s/All/train.info" % (config.feat_folder, feat_path_name), encoding="utf-8", index=False, header=True)
+    dfTest_original.to_csv("%s/%s/All/test.info" % (config.feat_folder, feat_path_name), encoding="utf-8", index=False, header=True)
     
     print("All Done.")

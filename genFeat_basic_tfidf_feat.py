@@ -396,7 +396,7 @@ if __name__ == "__main__":
     vec_types = [ "tfidf", "bow" ]
     ngram_range = config.basic_tfidf_ngram_range
     vocabulary_type = config.basic_tfidf_vocabulary_type
-    svd_n_components = [80, 90] # TODO: 100 150
+    svd_n_components = [60, 70] # TODO: 100 150
     tsne_n_components = [2]
 
     # feat name config
